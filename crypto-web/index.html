@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<!-- 
+    Laboratorio Didattico di Crittografia - ICDD
+    Progetto per l'insegnamento interattivo della sicurezza informatica
+    Autori: Peri Andrea, Germano Jeffrey
+    Anno: 2026
+-->
+<html lang="it">
+<head>
+    <!-- Metadati e Configurazione -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio Didattico di Crittografia | ICDD</title>
+    
+    <!-- Stylesheet e Font Google -->
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- HEADER: Intestazione principale dell'applicazione -->
+    <header>
+        <div class="header-content">
+            <h1>Laboratorio di Crittografia</h1>
+            <p>Strumenti interattivi per la didattica della sicurezza informatica</p>
+        </div>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- NAVIGAZIONE: Tab per navigare tra le diverse sezioni didattiche -->
+        <nav class="nav-tabs">
+            <button id="tab-home" class="active">Introduzione</button>
+            <button id="tab-caesar">1. Cesare</button>
+            <button id="tab-analysis">2. Analisi Frequenze</button>
+            <button id="tab-vigenere">3. Vigenère</button>
+            <button id="tab-enigma">4. Enigma</button>
+        </nav>
+
+        <!-- SEZIONE HOME: Introduzione al laboratorio e agli obiettivi formativi -->
+        <section id="view-home" class="view-section active">
+            <div class="card">
+                <h2>Benvenuti nel Laboratorio Virtuale</h2>
+                
+                <div class="info-box intro-crypto">
+                    <h3>Che cos'è la Crittografia?</h3>
+                    <p>La <strong>crittografia</strong> è l'arte e la scienza di proteggere le informazioni trasformandole in un formato illeggibile per chiunque non possieda la chiave corretta. Dal greco <em>kryptós</em> (nascosto) e <em>gráphein</em> (scrivere), questa disciplina ha accompagnato l'umanità per millenni: dai messaggi segreti di Cesare alle moderne comunicazioni digitali che proteggono le nostre transazioni online.</p>
+                    <p>Un sistema crittografico trasforma un <strong>messaggio in chiaro</strong> (plaintext) in un <strong>messaggio cifrato</strong> (ciphertext) attraverso un algoritmo e una chiave segreta. Solo chi possiede la chiave corretta può invertire il processo e recuperare il messaggio originale.</p>
+                </div>
+                
+                <p>Questo progetto didattico nasce per colmare il divario tra la teoria matematica della crittografia e la sua applicazione pratica. Attraverso simulatori interattivi, esploreremo l'evoluzione dei sistemi di cifratura classici, comprendendone non solo il funzionamento, ma anche i limiti di sicurezza.</p>
+                
+                <div class="info-grid">
+                    <div class="info-box">
+                        <h3>Obiettivi Formativi</h3>
+                        <ul>
+                            <li>Comprendere la differenza strutturale tra <strong>sostituzione monoalfabetica</strong> e <strong>polialfabetica</strong>.</li>
+                            <li>Visualizzare l'impronta statistica (frequenze) di una lingua e come sfruttarla.</li>
+                            <li>Sperimentare l'evoluzione dalla carta alla macchina elettromeccanica (Enigma).</li>
+                        </ul>
+                    </div>
+                    <div class="info-box">
+                        <h3>Informazioni Progetto</h3>
+                        <p><strong>Corso:</strong> Informatica per la creatività, didattica e divulgazione</p>
+                        <p><strong>Tipologia:</strong> Sviluppo Strumenti (Tipo 2)</p>
+                        
+                        <p class="mt-15"><strong>Studenti:</strong></p>
+                        <ul class="clean-list">
+                            <li>• Peri Andrea (5415544)</li>
+                            <li>• Germano Jeffrey (5669424)</li>
+                        </ul>
+                        <button id="btn-start" class="btn-primary w-100 mt-15">Inizia il Percorso</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEZIONE CESARE: Primo modulo didattico - Cifrario a sostituzione monoalfabetica -->
+        <section id="view-caesar" class="view-section">
+            <div class="card">
+                <h2>1. Il Cifrario di Cesare</h2>
+                
+                <div class="didactic-row">
+                    <div class="theory-text">
+                        <h3>Contesto Storico e Funzionamento</h3>
+                        <p>Utilizzato da Cesare per comunicare con i suoi soldati, questo è uno dei primi esempi di crittografia militare. È un cifrario a <strong>Sostituzione Monoalfabetica</strong> basato sulla traslazione.</p>
+                        <p>Ogni lettera del testo in chiaro ($P$) viene sostituita da una lettera che si trova un numero fisso di posizioni ($K$) più avanti nell'alfabeto. L'alfabeto è considerato ciclico (dopo la Z si riparte dalla A).</p>
+                        
+                        <div class="math-box">
+                            <strong>Formula Matematica:</strong><br>
+                            Assegnando A=0, B=1 ,..., Z=25:<br>
+                            <code class="math-code">C = (P + K) mod 26</code>
+                        </div>
+                        
+                        <h3 class="security-title-danger">Perché non è sicuro?</h3>
+                        <p>Il sistema è estremamente debole per due motivi fondamentali:</p>
+                        <ul class="indented-list">
+                            <li><strong>Spazio delle Chiavi Ridotto:</strong> Esistono solo 25 possibili chiavi di spostamento (K=1,...,K=25). Un attacco a forza bruta (Brute Force) richiede pochi secondi anche per un essere umano.</li>
+                            <li><strong>Preservazione dei Pattern:</strong> Essendo monoalfabetico, la struttura della lingua non cambia. Se "CIAO" appare due volte nel testo, apparirà cifrato nello stesso modo entrambe le volte (es. "FNDR"). Questo permette l'analisi statistica.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="diagram-box">
+                        <figure class="mb-20">
+                            <img src="assets/caesar-wheel.png" alt="Disco di Cesare" class="diagram-img">
+                            <figcaption>Fig. 1: Il Disco Cifrante.  Ruotando il disco interno, si allinea l'alfabeto in chiaro con quello cifrato secondo la chiave $K$.</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="assets/cesare.jpg" alt="Cesare" class="diagram-img">
+                            <figcaption>Fig. 1b: Immagine di Giulio Cesare.</figcaption>
+                        </figure>
+                    </div>
+                </div>
+
+                <div class="visualizer-container">
+                    <h4>Mappatura Dinamica Alfabeto (Live)</h4>
+                    <div id="caesar-visualizer" class="alphabet-grid"></div>
+                </div>
+
+                <div class="tool-interface">
+                    <div class="input-group">
+                        <label>Chiave di Spostamento (Shift):</label>
+                        <input type="number" id="c-shift" value="3" min="1" max="25">
+                    </div>
+                    <div class="input-group">
+                        <label>Testo in Chiaro (Input):</label>
+                        <textarea id="c-input" rows="2" placeholder="Scrivi qui il messaggio da cifrare..."></textarea>
+                    </div>
+                    
+                    <div class="button-row">
+                        <button id="btn-c-enc" class="btn-action">⬇️ Cifra</button>
+                        <button id="btn-c-dec" class="btn-action">⬆️ Decifra</button>
+                    </div>
+
+                    <div class="result-section">
+                        <label class="result-label">Risultato Elaborazione:</label>
+                        <div id="c-output-box" class="output-box success-theme">...</div>
+                    </div>
+                </div>
+
+                <div class="analysis-section mt-15">
+                    <h3>Dimostrazione di Vulnerabilità (Brute Force)</h3>
+                    <p>Premi il pulsante per attaccare il <strong>Risultato</strong> ottenuto sopra provando tutte le 25 chiavi automaticamente.</p>
+                    <button id="btn-c-analyze" class="btn-secondary mt-15">Esegui Brute Force sul Risultato</button>
+                    <div id="c-analysis-output" class="output-box hidden"></div>
+                </div>
+                
+                <div class="nav-footer">
+                    <button id="btn-next-analysis" class="btn-primary w-100">Prossimo: Analisi Frequenze ➡️</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEZIONE ANALISI FREQUENZE: Secondo modulo - Analisi statistica e vulnerabilità dei cifrari monoalfabetici -->
+        <section id="view-analysis" class="view-section">
+            <div class="card">
+                <h2>2. Strumento di Analisi delle Frequenze</h2>
+                
+                <div class="didactic-row">
+                    <div class="theory-text">
+                        <h3>L'Impronta Digitale della Lingua</h3>
+                        <p>Ogni lingua naturale segue una distribuzione statistica precisa. In italiano, ad esempio, le vocali (<strong>A, E, I, O</strong>) costituiscono circa il 45% di un testo, mentre lettere come Q, Z, H sono molto rare.</p>
+                        
+                        <h3 class="mt-20">Il Principio di Invarianza</h3>
+                        <p>Nei cifrari a sostituzione semplice (come Cesare), l'identità della lettera cambia, ma la sua <strong>frequenza rimane invariata</strong>. </p>
+                        <p>Se la lettera 'E' è la più frequente nel testo originale, e viene cifrata in 'H', allora 'H' sarà la lettera più frequente nel testo cifrato. L'istogramma delle frequenze non cambia forma, viene solo "traslato" a destra o sinistra.</p>
+                        
+                        <div class="didactic-note">
+                            <strong>Obiettivo Didattico:</strong> Incolla un testo lungo cifrato con Cesare. Osserva il grafico: vedrai picchi e valli identici a quelli della lingua italiana, solo spostati. Individuare il picco più alto permette di risalire allo Shift usato.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-interface">
+                    <div class="button-row mb-15">
+                        <button id="btn-load-sample" class="btn-secondary">📄 Carica Esempio Cifrato</button>
+                        <button id="btn-clear-analysis" class="btn-action">🗑️ Pulisci</button>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Testo da Analizzare:</label>
+                        <textarea id="analysis-input" rows="6" placeholder="Incolla qui un testo cifrato lungo..."></textarea>
+                    </div>
+
+                    <div class="chart-wrapper">
+                        <h4>Distribuzione Lettere (A-Z)</h4>
+                        <div id="freq-chart" class="chart-container">
+                            <p class="placeholder-text">In attesa di dati...</p>
+                        </div>
+                    </div>
+
+                    <div id="analysis-insight" class="output-box warning-theme hidden"></div>
+                </div>
+
+                <div class="nav-footer">
+                    <button id="btn-next-vigenere" class="btn-primary w-100">Prossimo: Cifrario di Vigenère ➡️</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEZIONE VIGENÈRE: Terzo modulo - Cifrario a sostituzione polialfabetica -->
+        <section id="view-vigenere" class="view-section">
+            <div class="card">
+                <h2>3. Il Cifrario di Vigenère</h2>
+                
+                <div class="didactic-row">
+                    <div class="theory-text">
+                        <h3>L'Evoluzione Polialfabetica</h3>
+                        <p>Descritto nel XVI secolo da Blaise de Vigenère, questo sistema fu considerato "indecifrabile" per tre secoli. Introduce la <strong>Sostituzione Polialfabetica</strong>: non si usa più un solo alfabeto cifrante, ma 26 diversi, alternati secondo una <strong>Parola Chiave</strong>.</p>
+                        
+                        <h3 class="mt-20">Come funziona</h3>
+                        <p>Si utilizza la <strong>Tabula Recta</strong> (una griglia di 26 alfabeti Cesare). Se la chiave è "ABC":</p>
+                        <ul class="indented-list-small">
+                            <li>La 1ª lettera del messaggio si cifra con la riga 'A' (Shift 0).</li>
+                            <li>La 2ª lettera si cifra con la riga 'B' (Shift 1).</li>
+                            <li>La 3ª lettera si cifra con la riga 'C' (Shift 2).</li>
+                        </ul>
+                        
+                        <h3 class="security-title-safe">Perché è sicuro contro l'analisi frequenze?</h3>
+                        <p>Vigenère "appiattisce" il grafico delle frequenze. La lettera 'E' del messaggio originale verrà cifrata a volte come 'E', a volte come 'F', a volte come 'G' (dipende dalla chiave). In questo modo, i picchi statistici della lingua vengono nascosti, rendendo l'analisi vista nel modulo precedente inefficace.</p>
+                    </div>
+                    
+                    <div class="diagram-box">
+                        <figure class="mb-20">
+                            <img src="assets/vigenere-table.png" alt="Tabula Recta" class="diagram-img">
+                            <figcaption>Fig. 2: La Tabula Recta.  Permette di incrociare la lettera del messaggio (righe) con la lettera corrente della chiave (colonne).</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="assets/Vigenere.png" alt="Cifrario di Vigenère" class="diagram-img">
+                            <figcaption>Fig. 2b: Immagine di Vigenère.</figcaption>
+                        </figure>
+                    </div>
+                </div>
+
+                <div class="tool-interface">
+                    <div class="input-group">
+                        <label>Messaggio:</label>
+                        <textarea id="v-input" rows="2" placeholder="Scrivi qui..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>Chiave Segreta:</label>
+                        <input type="text" id="v-key" autocomplete="off" placeholder="Es. VERMEER">
+                        <small>Nota: La lunghezza della chiave determina il "periodo" di ripetizione degli alfabeti.</small>
+                    </div>
+                    <div class="button-row">
+                        <button id="btn-v-enc" class="btn-action">🔒 Cifra</button>
+                        <button id="btn-v-dec" class="btn-action">🔓 Decifra</button>
+                    </div>
+                </div>
+
+                <div class="result-section">
+                    <h3>Risultato:</h3>
+                    <div id="v-explanation" class="explanation-text"></div>
+                    <div id="v-output" class="output-box">...</div>
+                </div>
+
+                <div class="nav-footer">
+                    <button id="btn-next-enigma" class="btn-primary w-100">Prossimo: Macchina Enigma ➡️</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEZIONE ENIGMA: Quarto modulo - Macchina crittografica elettromeccanica -->
+        <section id="view-enigma" class="view-section">
+            <div class="card">
+                <h2>4. La Macchina Enigma</h2>
+                
+                <div class="didactic-row">
+                    <div class="theory-text">
+                        <h3>L'Apice della Crittografia Meccanica</h3>
+                        <p>Brevettata nel 1918 e usata dalla Germania nella II Guerra Mondiale, Enigma è una macchina elettromeccanica a rotori. La sua complessità risiede nel fatto che il circuito di cifratura <strong>cambia fisicamente</strong> dopo ogni singola lettera digitata.</p>
+                        
+                        <h3 class="mt-20">Struttura e Funzionamento</h3>
+                        <p>La macchina Enigma era alimentata da una <strong>batteria</strong> e composta da quattro componenti: una <strong>plugboard (Steckerbrett)</strong> che scambiava coppie di lettere, tre <strong>rotori</strong> intercambiabili con cablaggio interno disordinato, e un <strong>riflettore (Umkehrwalze)</strong> che rimandava il segnale indietro. Dopo ogni pressione di tasto, il primo rotore avanzava di uno scatto, cambiando l'alfabeto di sostituzione (come un contachilometri), creando una configurazione sempre diversa.</p>
+                        
+                        <p>La debolezza fatale di Enigma era che <em>nessuna lettera poteva mai essere cifrata in se stessa</em> (proprietà del riflettore). Alan Turing sfruttò questa proprietà sviluppando la macchina <strong>"Bombe"</strong>, capace di cercare automaticamente le configurazioni corrette eliminando le combinazioni impossibili. Questo ridusse il tempo di ricerca da mesi a poche ore, permettendo di violare il codice e accorciare significativamente la Seconda Guerra Mondiale.</p>
+                    </div>
+                    <div class="diagram-box">
+                        <figure class="mb-20">
+                            <img src="assets/enigma2.jpg" alt="Schema rotori Enigma" class="diagram-img">
+                            <figcaption>Fig. 3: Schema del flusso del segnale attraverso i rotori e il riflettore.</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="assets/enigma.jpg" alt="Foto macchina Enigma" class="diagram-img">
+                            <figcaption>Fig. 4: Una macchina Enigma storica con i suoi rotori intercambiabili in primo piano.</figcaption>
+                        </figure>
+                    </div>
+                </div>
+
+                <div class="tool-interface enigma-theme">
+                    
+                    <div class="enigma-controls">
+                        <div class="rotor-group">
+                            <label>Rotor I</label>
+                            <input type="number" id="rotor-1" min="1" max="26" value="1">
+                        </div>
+                        <div class="rotor-group">
+                            <label>Rotor II</label>
+                            <input type="number" id="rotor-2" min="1" max="26" value="1">
+                        </div>
+                        <div class="rotor-group">
+                            <label>Rotor III</label>
+                            <input type="number" id="rotor-3" min="1" max="26" value="1">
+                        </div>
+                        <button id="btn-reset-enigma" class="btn-secondary btn-reset-align">Reset</button>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="text-light">Digita qui (Un carattere alla volta):</label>
+                        <input type="text" id="enigma-input" placeholder="Premi i tasti..." class="enigma-typewriter">
+                    </div>
+
+                    <div class="lampboard-container">
+                        <h4 class="lampboard-title">LAMPBOARD (Output)</h4>
+                        <div id="enigma-lamps" class="lamp-grid"></div>
+                    </div>
+                    
+                    <div class="enigma-tape-output">
+                        <span class="text-dim">Nastro Output: </span>
+                        <span id="enigma-output-text" class="enigma-tape-text"></span>
+                    </div>
+
+                </div>
+
+                <div class="enigma-how-it-works">
+                    <button id="btn-enigma-how" class="btn-secondary">Come funziona? 💡</button>
+                </div>
+                
+                <div class="nav-footer">
+                    <p>Hai completato il percorso didattico! 🎉</p>
+                    <button id="btn-back-home" class="btn-primary btn-dark mt-15">Torna alla Home 🏠</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- SEPARATORE: Linea di divisione prima del footer -->
+    <hr class="page-divider">
+
+    <!-- MODAL: Spiegazione dettagliata del funzionamento della macchina Enigma -->
+    <div id="enigma-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" id="modal-close">&times;</span>
+            <h3>Come funziona la Macchina Enigma?</h3>
+            <p>Per comprendere Enigma, bisogna seguire il viaggio dell'elettricità. Quando l'operatore preme un tasto (ad esempio la 'A'), il circuito si chiude e la corrente compie questo percorso:</p>
+            
+            <div class="modal-steps">
+                <p><strong>Input:</strong> La corrente parte dalla batteria ed entra nella macchina attraverso il tasto premuto.</p>
+                
+                <p><strong>Rotori (Andata):</strong> Il segnale attraversa i tre rotori (III, II, I) da destra a sinistra. Ogni rotore ha un cablaggio interno disordinato che "scambia" la lettera (es. la 'A' entra nel primo rotore ed esce come 'F', poi entra nel secondo e diventa 'T'...).</p>
+                
+                <p><strong>Riflettore (Il Rimbalzo):</strong> Alla fine del percorso, il segnale colpisce il Riflettore (un componente fisso). Questo ha il compito unico di prendere il segnale e inviarlo indietro su un percorso diverso.</p>
+                
+                <p><strong>Rotori (Ritorno):</strong> La corrente riattraversa i tre rotori in senso inverso (I, II, III), subendo altre tre trasformazioni matematiche.</p>
+                
+                <p><strong>Output (Lampboard):</strong> Infine, la corrente arriva al pannello delle lampadine, accendendo la lettera cifrata finale (ad esempio la 'X').</p>
+
+                <p>Dopo ogni singola pressione di un tasto, il primo rotore (quello a destra) ruota di uno scatto ("step"). Quando il primo rotore completa un giro intero (26 scatti), fa muovere il secondo rotore di una posizione, che a sua volta farà muovere il terzo.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER: Informazioni di copyright e crediti -->
+    <footer>
+        <p>&copy; 2026 Progetto Università di Genova - ICDD</p>
+    </footer>
+
+    <!-- SCRIPT: Caricamento dei moduli JavaScript per le funzionalità interattive -->
+    <!-- Main: Gestione della navigazione tra sezioni -->
+    <script src="js/main.js"></script>
+    <!-- Caesar: Implementazione cifrario di Cesare e brute force -->
+    <script src="js/caesar.js"></script>
+    <!-- Analysis: Analisi frequenze lettere e visualizzazione grafici -->
+    <script src="js/analysis.js"></script>
+    <!-- Vigenere: Implementazione cifrario di Vigenère -->
+    <script src="js/vigenere.js"></script>
+    <!-- Enigma: Simulazione macchina Enigma con rotori -->
+    <script src="js/enigma.js"></script>
+    <!-- Modal: Gestione finestre modali -->
+    <script src="js/modal.js"></script>
+
+</body>
+</html>
